@@ -1,0 +1,34 @@
+[build]
+builder = "NIXPACKS"
+
+[deploy]
+# This is the command Railway runs to start your app
+startCommand = "php artisan serve --host=0.0.0.0 --port=$PORT"
+
+[phases.setup]
+# We force Railway to use PHP 8.3 and necessary extensions
+nixPkgs = [
+  "php83",
+  "php83Extensions.curl",
+  "php83Extensions.mbstring",
+  "php83Extensions.pdo_mysql",
+  "composer",
+  "nodejs"
+]
+
+[phases.install]
+# 👇 This is the key fix: we skip dev packages (Pest, Paratest)
+cmds = [
+  "composer install --optimize-autoloader --no-dev --no-scripts --no-interaction",
+  "npm install",
+  "npm run build"
+]
+
+[phases.build]
+cmds = [
+  "php artisan key:generate",
+  "php artisan config:cache",
+  "php artisan route:cache",
+  "php artisan view:cache",
+  "php artisan migrate --force"
+]
