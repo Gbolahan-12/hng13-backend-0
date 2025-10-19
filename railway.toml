@@ -8,7 +8,7 @@ startCommand = "php artisan serve --host=0.0.0.0 --port=$PORT"
 [phases.setup]
 # We force Railway to use PHP 8.3 and necessary extensions
 nixPkgs = [
-  "php83",
+  "php82",
   "php83Extensions.curl",
   "php83Extensions.mbstring",
   "php83Extensions.pdo_mysql",
